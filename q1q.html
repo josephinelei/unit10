@@ -1,0 +1,2660 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>長方體和正方體的表面積 — 互動教學應用程式</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", "PingFang HK", sans-serif;
+      background: #f1f5f9;
+      color: #1e293b;
+      touch-action: manipulation;
+      overflow-x: hidden;
+    }
+    header {
+      background: #ffffff;
+      border-bottom: 2px solid #e2e8f0;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .brand h1 {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 0;
+      color: #0f172a;
+    }
+    .student-box {
+      display: flex;
+      align-items: center;
+      background: #eff6ff;
+      border: 2px solid #93c5fd;
+      border-radius: 12px;
+      padding: 4px 10px;
+      gap: 6px;
+    }
+    .student-box select {
+      border: none;
+      background: transparent;
+      font-size: 15px;
+      font-weight: 800;
+      color: #1e3a8a;
+      outline: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .logout-btn {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1.5px solid #fca5a5;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .logout-btn:active {
+      transform: scale(0.96);
+    }
+    .activity-pill {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1.5px solid #fcd34d;
+      padding: 5px 12px;
+      border-radius: 99px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .nav-tabs {
+      display: flex;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid #cbd5e1;
+      gap: 4px;
+    }
+    .tab-btn {
+      border: none;
+      background: transparent;
+      padding: 9px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(37,99,235,0.3);
+    }
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 15px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.1s, opacity 0.2s;
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+    .btn-green { background: #059669; color: #fff; }
+    .btn-dark { background: #334155; color: #fff; }
+    .btn-blue { background: #2563eb; color: #fff; }
+    .btn-amber { background: #f59e0b; color: #fff; }
+    .btn-red { background: #dc2626; color: #fff; }
+    .btn-purple { background: #ede9fe; color: #6d28d9; border: 2px solid #c4b5fd; }
+    .btn-purple.active { background: #7c3aed; color: #fff; border-color: #7c3aed; }
+    .btn-gray { background: #e2e8f0; color: #334155; }
+
+    main {
+      max-width: 1280px;
+      margin: 16px auto;
+      padding: 0 16px;
+    }
+    .grid-part1 {
+      display: grid;
+      grid-template-columns: 1.85fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 960px) {
+      .grid-part1 {
+        grid-template-columns: 1fr;
+      }
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 2px solid #e2e8f0;
+      padding: 18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .preset-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 0;
+      font-size: 14px;
+    }
+    .preset-btn {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+      cursor: pointer;
+    }
+    .preset-btn:hover {
+      background: #eff6ff;
+      border-color: #60a5fa;
+    }
+    .legend {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 700;
+      margin-left: auto;
+    }
+    .dot {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      vertical-align: middle;
+      margin-right: 4px;
+      border: 1px solid rgba(0,0,0,0.2);
+    }
+    .canvas-wrap {
+      position: relative;
+      width: 100%;
+      height: 430px;
+      background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      overflow: hidden;
+      touch-action: none;
+    }
+    #canvas3d {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+    }
+    #canvas3d:active {
+      cursor: grabbing;
+    }
+    .canvas-overlay-top {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(255,255,255,0.92);
+      padding: 8px 14px;
+      border-radius: 12px;
+      border: 1px solid #cbd5e1;
+      font-size: 14px;
+      font-weight: 700;
+      pointer-events: none;
+    }
+    .canvas-overlay-bottom {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(255,255,255,0.95);
+      padding: 8px 14px;
+      border-radius: 12px;
+      border: 1px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .discovery-box {
+      margin-top: 12px;
+      background: #fffbeb;
+      border: 1.5px solid #fde68a;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 14px;
+      color: #92400e;
+    }
+    .slider-group {
+      margin-bottom: 14px;
+    }
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 800;
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+    input[type="range"] {
+      width: 100%;
+      height: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .stats-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+      text-align: center;
+    }
+    .stat-item {
+      padding: 10px 6px;
+      border-radius: 12px;
+      font-weight: 800;
+    }
+    .formula-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .total-area-box {
+      background: #2563eb;
+      color: #ffffff;
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .quiz-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .progress-dots {
+      display: grid;
+      grid-template-columns: repeat(20, 1fr);
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 768px) {
+      .progress-dots {
+        grid-template-columns: repeat(10, 1fr);
+      }
+    }
+    .q-dot {
+      height: 36px;
+      border-radius: 8px;
+      border: 2px solid #cbd5e1;
+      background: #f8fafc;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .q-dot.current {
+      border-color: #2563eb;
+      background: #dbeafe;
+      color: #1e40af;
+    }
+    .q-dot.done {
+      border-color: #10b981;
+      background: #10b981;
+      color: #ffffff;
+    }
+    .quiz-body {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 20px;
+      align-items: center;
+    }
+    @media (max-width: 860px) {
+      .quiz-body {
+        grid-template-columns: 1fr;
+      }
+    }
+    .svg-stage {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 18px;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .answer-input-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0;
+      background: #ffffff;
+      padding: 12px;
+      border-radius: 14px;
+      border: 2px solid #cbd5e1;
+    }
+    .formula-input {
+      font-size: 21px;
+      font-weight: 800;
+      text-align: center;
+      padding: 10px 12px;
+      flex: 1;
+      min-width: 210px;
+      border: 3px solid #cbd5e1;
+      border-radius: 12px;
+      outline: none;
+      color: #1e293b;
+      transition: all 0.15s;
+    }
+    .answer-input {
+      font-size: 24px;
+      font-weight: 900;
+      text-align: center;
+      padding: 10px;
+      width: 125px;
+      border: 3px solid #cbd5e1;
+      border-radius: 12px;
+      outline: none;
+      color: #1e293b;
+      transition: all 0.15s;
+    }
+    .formula-input.active-box, .answer-input.active-box,
+    .formula-input:focus, .answer-input:focus {
+      border-color: #2563eb;
+      background: #eff6ff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+    }
+    .yellow-formula-card {
+      background: #fef08a;
+      border: 2.5px solid #eab308;
+      border-radius: 14px;
+      padding: 10px 14px;
+      margin-top: 8px;
+      color: #0f172a;
+      font-size: 16px;
+      font-weight: 900;
+      text-align: center;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+    }
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .key-btn {
+      background: #f1f5f9;
+      border: 2px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 12px 0;
+      font-size: 20px;
+      font-weight: 800;
+      cursor: pointer;
+      color: #1e293b;
+    }
+    .key-btn:active {
+      background: #cbd5e1;
+    }
+    .feedback-box {
+      padding: 14px 16px;
+      border-radius: 14px;
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+    .feedback-ok {
+      background: #ecfdf5;
+      border: 2px solid #34d399;
+      color: #065f46;
+    }
+    .feedback-err {
+      background: #fffbeb;
+      border: 2px solid #fbbf24;
+      color: #92400e;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 14px;
+    }
+    .modal-backdrop.show {
+      display: flex;
+    }
+    .modal-card {
+      background: #ffffff;
+      border-radius: 22px;
+      max-width: 960px;
+      width: 100%;
+      max-height: 92vh;
+      overflow-y: auto;
+      padding: 22px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+
+    .pwd-slots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 14px 0;
+    }
+    .pwd-slot {
+      width: 44px;
+      height: 52px;
+      border: 2.5px solid #cbd5e1;
+      border-radius: 12px;
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 900;
+      color: #0f172a;
+    }
+    .pwd-slot.filled {
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+    .pwd-keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .pwd-key {
+      background: #f1f5f9;
+      border: 2px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 14px 0;
+      font-size: 22px;
+      font-weight: 800;
+      color: #1e293b;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .cute-board-card {
+      background-color: #fdfaf2;
+      background-image: radial-gradient(#e6dec8 1.5px, transparent 1.5px);
+      background-size: 22px 22px;
+      border: 4px solid #4a4036;
+      border-radius: 28px;
+      max-width: 1040px;
+      width: 100%;
+      max-height: 94vh;
+      overflow-y: auto;
+      padding: 20px 24px;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.35);
+      color: #2d2620;
+    }
+    .cute-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px dashed #d5cbb8;
+    }
+    .cute-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cute-title-text {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      border-bottom: 3px solid #4a4036;
+      padding-bottom: 2px;
+    }
+    .cute-clock-wrap {
+      text-align: center;
+    }
+    .cute-date-str {
+      font-size: 13px;
+      font-weight: 800;
+      color: #8c7f70;
+      letter-spacing: 2px;
+    }
+    .cute-time-str {
+      font-size: 40px;
+      font-weight: 900;
+      color: #4a4036;
+      line-height: 1.05;
+      font-variant-numeric: tabular-nums;
+    }
+    .cute-main-grid {
+      display: grid;
+      grid-template-columns: 1.45fr 1fr;
+      gap: 18px;
+      margin-top: 14px;
+    }
+    @media (max-width: 860px) {
+      .cute-main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .cute-panel {
+      background: #ffffff;
+      border: 3.5px solid #4a4036;
+      border-radius: 22px;
+      padding: 20px 18px 16px 18px;
+      position: relative;
+      box-shadow: 0 5px 0 #4a4036;
+    }
+    .cute-pill-tag {
+      position: absolute;
+      top: -14px;
+      left: 20px;
+      padding: 3px 16px;
+      border-radius: 99px;
+      border: 2.5px solid #4a4036;
+      font-size: 13px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+    .cute-pill-pink {
+      background: #f4a2b8;
+      color: #4a4036;
+    }
+    .cute-pill-green {
+      background: #68d391;
+      color: #22543d;
+    }
+
+    .chick-track-area {
+      margin: 22px 0 12px 0;
+      padding: 26px 14px 8px 14px;
+      background: #fcf9f2;
+      border: 2px solid #e6dec8;
+      border-radius: 18px;
+    }
+    .chick-bar-outer {
+      position: relative;
+      height: 28px;
+      background: #f3ede0;
+      border: 3px solid #4a4036;
+      border-radius: 99px;
+      overflow: visible;
+    }
+    .chick-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: repeating-linear-gradient(
+        -45deg,
+        #81e6d9,
+        #81e6d9 12px,
+        #4fd1c5 12px,
+        #4fd1c5 24px
+      );
+      transition: width 0.4s ease;
+    }
+    .chick-runner {
+      position: absolute;
+      top: -34px;
+      transform: translateX(-50%);
+      font-size: 28px;
+      transition: left 0.4s ease;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15));
+    }
+    .chick-flag {
+      position: absolute;
+      right: 6px;
+      top: -34px;
+      font-size: 26px;
+    }
+
+    .stu-progress-list {
+      max-height: 255px;
+      overflow-y: auto;
+      padding-right: 4px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    @media (max-width: 600px) {
+      .stu-progress-list {
+        grid-template-columns: 1fr;
+      }
+    }
+    .stu-prog-item {
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .stu-prog-item:hover {
+      border-color: #4a4036;
+      background: #fffdf7;
+    }
+    .stu-prog-item.selected {
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+    .stu-mini-bar {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+    .stu-mini-fill {
+      height: 100%;
+      border-radius: 99px;
+      transition: width 0.3s;
+    }
+
+    .att-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .att-box {
+      border: 2.5px solid #4a4036;
+      border-radius: 16px;
+      padding: 10px 14px;
+    }
+    .att-present {
+      background: #ebf8ff;
+    }
+    .att-absent {
+      background: #e6fffa;
+    }
+    .att-num {
+      font-size: 38px;
+      font-weight: 900;
+      color: #3b312b;
+      line-height: 1.1;
+    }
+
+    .speed-king-box {
+      background: #ffe4e8;
+      border: 2.5px solid #4a4036;
+      border-radius: 16px;
+      padding: 12px 14px;
+      min-height: 225px;
+      max-height: 255px;
+      overflow-y: auto;
+    }
+    .speed-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.88);
+      border: 1.5px solid #f4a2b8;
+      border-radius: 10px;
+      padding: 6px 10px;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .cute-activity-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .cute-act-btn {
+      background: #ffffff;
+      border: 3px solid #4a4036;
+      border-radius: 14px;
+      padding: 12px 10px;
+      font-size: 18px;
+      font-weight: 900;
+      color: #4a4036;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #4a4036;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .cute-act-btn.active {
+      background: #fef0c7;
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #4a4036;
+    }
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="closedLockScreen" class="modal-backdrop" style="z-index:2000; background:#0f172a;">
+    <div class="modal-card" style="max-width:460px; text-align:center;">
+      <div style="font-size:64px;">🔒</div>
+      <h2 style="font-size:32px; margin:10px 0; color:#dc2626;">本節課已完結</h2>
+      <p style="font-size:17px; color:#475569; line-height:1.6;">
+        老師已關閉本節課的作答權限。<br/>請將 iPad 放好並專心聽老師講解！
+      </p>
+      <div style="display:flex; gap:10px; margin-top:16px;">
+        <button class="btn btn-blue" style="flex:1; justify-content:center;" onclick="checkBackendStatus(true)">🔄 重新檢查狀態</button>
+        <button class="btn btn-green" style="flex:1; justify-content:center;" onclick="openPasswordModal()">🔐 教師解鎖</button>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <div class="brand">
+      <span style="font-size:26px;">📦</span>
+      <h1>長方體和正方體的表面積</h1>
+      <div class="student-box">
+        <span>👤 學生：</span>
+        <select id="studentSelect" onchange="onStudentChange()">
+          <option value="">👉 請先選擇你的姓名</option>
+          <option value="1 王仕軒">1 王仕軒</option>
+          <option value="2 吳映林">2 吳映林</option>
+          <option value="3 阮苡喬">3 阮苡喬</option>
+          <option value="4 武沛瑤">4 武沛瑤</option>
+          <option value="5 梁愷喬">5 梁愷喬</option>
+          <option value="6 陳樂怡">6 陳樂怡</option>
+          <option value="7 陳蘊瀅">7 陳蘊瀅</option>
+          <option value="8 賀梓桐">8 賀梓桐</option>
+          <option value="9 馮子嫣">9 馮子嫣</option>
+          <option value="10 黃羽晞">10 黃羽晞</option>
+          <option value="11 黃紫晴">11 黃紫晴</option>
+          <option value="12 樊婧瑤">12 樊婧瑤</option>
+          <option value="13 蔣月晴">13 蔣月晴</option>
+          <option value="14 關咏芯">14 關咏芯</option>
+          <option value="15 毛穎聰">15 毛穎聰</option>
+          <option value="16 王柏言">16 王柏言</option>
+          <option value="17 吳燁朗">17 吳燁朗</option>
+          <option value="18 李東燁">18 李東燁</option>
+          <option value="19 李健峰">19 李健峰</option>
+          <option value="20 李梓萬">20 李梓萬</option>
+          <option value="21 邱子毅">21 邱子毅</option>
+          <option value="22 張曉鋒">22 張曉鋒</option>
+          <option value="23 陳殷齊">23 陳殷齊</option>
+          <option value="24 勞家謙">24 勞家謙</option>
+          <option value="25 曾建言">25 曾建言</option>
+          <option value="26 黃昊霆">26 黃昊霆</option>
+          <option value="27 黃柏希">27 黃柏希</option>
+          <option value="28 黃翊鎧">28 黃翊鎧</option>
+          <option value="29 楊溢曦">29 楊溢曦</option>
+          <option value="30 蔡一駿">30 蔡一駿</option>
+          <option value="31 蔡桹顥">31 蔡桹顥</option>
+          <option value="32 鄭行之">32 鄭行之</option>
+          <option value="33 盧澤軒">33 盧澤軒</option>
+          <option value="34 關智誠">34 關智誠</option>
+          <option value="35 訪客">35 訪客</option>
+        </select>
+        <button class="logout-btn" onclick="logoutStudent()" title="切換學生並重置作答畫面">🚪 登出</button>
+      </div>
+      <span id="currentActivityBadge" class="activity-pill">🎯 當前：活動一</span>
+      <span id="teacherModeBadge" class="activity-pill hidden" style="background:#dcfce7; color:#166534; border-color:#86efac;">👩‍🏫 教師免鎖講解模式</span>
+    </div>
+
+    <div class="nav-tabs">
+      <button id="tabBtn1" class="tab-btn active" onclick="switchTab('part1')">🧊 第一部份：立體與展開圖</button>
+      <button id="tabBtn2" class="tab-btn" onclick="switchTab('part2')">✏️ 第二部份：表面積計算挑戰 (20題)</button>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn btn-green" onclick="openPasswordModal()">📊 教師數據看板</button>
+      <button class="btn btn-dark" onclick="openSettingsModal()">⚙️ 設定</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="sectionPart1">
+      <div class="grid-part1">
+        <div class="card">
+          <div class="toolbar">
+            <div style="display:flex; gap:8px;">
+              <button id="shapeBtnCuboid" class="btn btn-blue" onclick="setShapeType('cuboid')">📦 長方體</button>
+              <button id="shapeBtnCube" class="btn btn-gray" onclick="setShapeType('cube')">🎲 正方體</button>
+            </div>
+
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button id="foldToggleBtn" class="btn btn-amber" onclick="toggleFold()">📖 按一下展開紙樣</button>
+              <button id="wireframeBtn" class="btn btn-purple" onclick="toggleWireframe()">🔍 透視圖 (12棱8頂點)</button>
+              <button class="btn btn-gray" onclick="resetCamera()">🔄 重置視角</button>
+            </div>
+          </div>
+
+          <div class="preset-bar">
+            <span style="font-weight:800; color:#475569;">🔢 整數尺寸快速切換：</span>
+            <button class="preset-btn" onclick="applyPreset('cuboid', 6, 5, 4)">長方體 (長6・闊5・高4 cm)</button>
+            <button class="preset-btn" onclick="applyPreset('cuboid', 8, 6, 4)">長方體 (長8・闊6・高4 cm)</button>
+            <button class="preset-btn" onclick="applyPreset('cube', 5, 5, 5)">正方體 (棱長5 cm)</button>
+
+            <div class="legend">
+              <span><i class="dot" style="background:#f472b6;"></i>上/下</span>
+              <span><i class="dot" style="background:#38bdf8;"></i>前/後</span>
+              <span><i class="dot" style="background:#4ade80;"></i>左/右</span>
+            </div>
+          </div>
+
+          <div class="canvas-wrap">
+            <canvas id="canvas3d"></canvas>
+            <div class="canvas-overlay-top">
+              <div>👆 手指或滑鼠拖曳畫面可 360° 旋轉觀察</div>
+              <div id="modeStatusText" style="color:#2563eb; margin-top:2px;">目前狀態：立體圖形模式</div>
+            </div>
+            <div class="canvas-overlay-bottom">
+              <span>立體</span>
+              <input id="foldSlider" type="range" min="0" max="100" value="0" style="width:110px;" oninput="onFoldSliderInput(this.value)" />
+              <span>紙樣(展開)</span>
+            </div>
+          </div>
+
+          <div class="discovery-box">
+            <div>📌 <b>課本小組活動「我的發現」：</b>正方體和長方體的 <b>面(6個)</b>、<b>棱(12條)</b>、<b>頂點(8個)</b> 數目完全相同！</div>
+            <div style="margin-top:4px;">💡 <b>正方體</b>的每個面都相同，每條棱長都相等；<b>長方體</b>只有相對的面完全相同，相對的棱長度相等。</div>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div class="card">
+            <h3 id="dimTitle" style="margin:0 0 14px 0; font-size:18px;">📏 調整長方體整數尺寸 (單位: cm)</h3>
+
+            <div class="slider-group">
+              <div class="slider-header">
+                <span id="labelL" style="color:#1d4ed8;">長 (L)：</span>
+                <span id="valL" style="font-size:18px;">6 cm</span>
+              </div>
+              <input id="sliderL" type="range" min="1" max="12" step="1" value="6" oninput="updateDimensions()" />
+            </div>
+
+            <div id="groupW" class="slider-group">
+              <div class="slider-header">
+                <span style="color:#047857;">闊 (W)：</span>
+                <span id="valW" style="font-size:18px;">5 cm</span>
+              </div>
+              <input id="sliderW" type="range" min="1" max="12" step="1" value="5" oninput="updateDimensions()" />
+            </div>
+
+            <div id="groupH" class="slider-group">
+              <div class="slider-header">
+                <span style="color:#b45309;">高 (H)：</span>
+                <span id="valH" style="font-size:18px;">4 cm</span>
+              </div>
+              <input id="sliderH" type="range" min="1" max="12" step="1" value="4" oninput="updateDimensions()" />
+            </div>
+
+            <div class="stats-3">
+              <div class="stat-item" style="background:#fdf2f8; border:1px solid #fbcfe8; color:#9d174d;">
+                <div style="font-size:12px;">表面數量</div>
+                <div style="font-size:18px;">6 個面</div>
+              </div>
+              <div class="stat-item" style="background:#eff6ff; border:1px solid #bfdbfe; color:#1e40af;">
+                <div style="font-size:12px;">棱的數量</div>
+                <div style="font-size:18px;">12 條棱</div>
+              </div>
+              <div class="stat-item" style="background:#fffbeb; border:1px solid #fde68a; color:#92400e;">
+                <div style="font-size:12px;">頂點數量</div>
+                <div style="font-size:18px;">8 個頂點</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="margin:0 0 12px 0; font-size:18px;">🎯 紙樣六個面與表面積直觀計算</h3>
+
+            <div class="formula-row" style="background:#fdf2f8; border:1px solid #f9a8d4; color:#831843;">
+              <span>🩷 上、下面 (長 × 闊 × 2)</span>
+              <span id="pairTopBottom">6 × 5 × 2 = 60 cm²</span>
+            </div>
+            <div class="formula-row" style="background:#f0f9ff; border:1px solid #7dd3fc; color:#0c4a6e;">
+              <span>🩵 前、後面 (長 × 高 × 2)</span>
+              <span id="pairFrontBack">6 × 4 × 2 = 48 cm²</span>
+            </div>
+            <div class="formula-row" style="background:#f0fdf4; border:1px solid #86efac; color:#14532d;">
+              <span>💚 左、右面 (闊 × 高 × 2)</span>
+              <span id="pairLeftRight">5 × 4 × 2 = 40 cm²</span>
+            </div>
+
+            <div class="total-area-box">
+              <div style="font-size:13px; opacity:0.9;">長方體或正方體 6 個面的總面積稱為「表面積」：</div>
+              <div id="formulaSummary" style="font-size:15px; font-weight:800; margin:6px 0;">(6×5 + 6×4 + 5×4) × 2 = (30 + 24 + 20) × 2</div>
+              <div style="display:flex; justify-content:space-between; align-items:baseline; border-top:1px solid rgba(255,255,255,0.3); padding-top:8px;">
+                <span style="font-weight:800;">總表面積：</span>
+                <span id="totalAreaText" style="font-size:28px; font-weight:900; color:#fde047;">148 cm²</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sectionPart2" class="hidden">
+      <div class="card">
+        <div class="quiz-header">
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <span id="qBadgeType" style="background:#2563eb; color:#fff; padding:6px 14px; border-radius:99px; font-weight:800; font-size:14px;">正方體 (第 1-10 題)</span>
+            <span id="qProgressTitle" style="font-size:20px; font-weight:900;">第 1 / 20 題</span>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="background:#ecfdf5; color:#047857; border:1.5px solid #6ee7b7; padding:6px 14px; border-radius:10px; font-weight:800; font-size:15px;">
+              ✅ 本回合已完成：<span id="completedCount">0</span> / 20 題
+            </span>
+          </div>
+        </div>
+
+        <div id="progressDots" class="progress-dots"></div>
+
+        <div class="quiz-body">
+          <div class="svg-stage">
+            <div id="questionSvgBox" style="width:100%; max-width:340px;"></div>
+            <div id="questionCaption" style="margin-top:8px; font-size:13px; font-weight:700; color:#64748b;"></div>
+          </div>
+
+          <div>
+            <div style="background:#f8fafc; border:2px solid #e2e8f0; border-radius:16px; padding:16px;">
+              <div style="font-size:13px; font-weight:800; color:#2563eb; margin-bottom:6px;" id="qSourceTag">《現代小學數學》5上 課本題型</div>
+              <div id="questionPrompt" style="font-size:21px; font-weight:800; line-height:1.5; color:#0f172a;"></div>
+
+              <div style="font-size:13px; font-weight:800; color:#475569; margin-top:10px;">
+                👇 點擊「算式格」或「答案格」輸入（按鍵盤 <b>＝</b> 可直接跳至答案格，乘加順序不拘）：
+              </div>
+              <div class="answer-input-row">
+                <span style="font-size:18px; font-weight:900; color:#1e3a8a;">算式：</span>
+                <input id="formulaInput" type="text" class="formula-input active-box" placeholder="請在此輸入算式" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onclick="setActiveInput('formula')" onfocus="setActiveInput('formula')" />
+                <span style="font-size:24px; font-weight:900; color:#0f172a;">＝</span>
+                <input id="answerInput" type="text" inputmode="numeric" class="answer-input" placeholder="答案" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onclick="setActiveInput('answer')" onfocus="setActiveInput('answer')" />
+                <span id="questionUnit" style="font-size:19px; font-weight:900; color:#334155;">cm²</span>
+              </div>
+
+              <div class="keypad">
+                <button class="key-btn" onclick="pressKey('1')">1</button>
+                <button class="key-btn" onclick="pressKey('2')">2</button>
+                <button class="key-btn" onclick="pressKey('3')">3</button>
+                <button class="key-btn" onclick="pressKey('4')">4</button>
+                <button class="key-btn" onclick="pressKey('5')">5</button>
+                <button class="key-btn" style="background:#fee2e2; color:#b91c1c;" onclick="pressKey('BS')">⌫</button>
+
+                <button class="key-btn" onclick="pressKey('6')">6</button>
+                <button class="key-btn" onclick="pressKey('7')">7</button>
+                <button class="key-btn" onclick="pressKey('8')">8</button>
+                <button class="key-btn" onclick="pressKey('9')">9</button>
+                <button class="key-btn" onclick="pressKey('0')">0</button>
+                <button class="key-btn" style="background:#fef3c7; color:#92400e; font-size:16px;" onclick="pressKey('CLR')">清除</button>
+
+                <button class="key-btn" style="background:#dbeafe; color:#1d4ed8; border-color:#93c5fd;" onclick="pressKey('×')">×</button>
+                <button class="key-btn" style="background:#dbeafe; color:#1d4ed8; border-color:#93c5fd;" onclick="pressKey('+')">+</button>
+                <button class="key-btn" style="background:#dbeafe; color:#1d4ed8; border-color:#93c5fd;" onclick="pressKey('-')">-</button>
+                <button class="key-btn" style="background:#ede9fe; color:#6d28d9; border-color:#c4b5fd;" onclick="pressKey('(')">(</button>
+                <button class="key-btn" style="background:#ede9fe; color:#6d28d9; border-color:#c4b5fd;" onclick="pressKey(')')">)</button>
+                <button class="key-btn" style="background:#d1fae5; color:#047857; border-color:#6ee7b7; font-size:17px;" onclick="pressKey('=')" title="跳到答案格">＝ 答案</button>
+              </div>
+
+              <div id="feedbackBox" class="feedback-box hidden"></div>
+
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button id="submitBtn" class="btn btn-blue" style="flex:1; justify-content:center; font-size:18px; padding:14px;" onclick="submitAnswer()">✅ 提交答案</button>
+                <button id="nextBtn" class="btn btn-green hidden" style="flex:1; justify-content:center; font-size:18px; padding:14px;" onclick="goNextQuestion()">➡️ 下一題</button>
+                <button class="btn btn-amber" style="padding:14px 18px;" onclick="showFormulaHint()">💡 提示</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="passwordModal" class="modal-backdrop" style="z-index:2100;">
+    <div class="modal-card" style="max-width:380px; text-align:center;">
+      <div style="font-size:40px;">🔐</div>
+      <h3 style="font-size:21px; margin:6px 0;">教師數據看板驗證</h3>
+      <p style="font-size:13px; color:#64748b; margin:0;">點擊下方數字輸入密碼（0秒瞬間以 * 遮蔽，不彈出系統鍵盤）：</p>
+
+      <div id="pwdSlots" class="pwd-slots">
+        <div class="pwd-slot"></div>
+        <div class="pwd-slot"></div>
+        <div class="pwd-slot"></div>
+        <div class="pwd-slot"></div>
+        <div class="pwd-slot"></div>
+        <div class="pwd-slot"></div>
+      </div>
+
+      <div id="pwdErrorMsg" class="hidden" style="color:#dc2626; font-weight:700; font-size:14px; margin-bottom:8px;">❌ 密碼錯誤，已自動清空請重試！</div>
+
+      <div class="pwd-keypad">
+        <button type="button" class="pwd-key" onclick="pressPwdKey('1')">1</button>
+        <button type="button" class="pwd-key" onclick="pressPwdKey('2')">2</button>
+        <button type="button" class="pwd-key" onclick="pressPwdKey('3')">3</button>
+        <button type="button" class="pwd-key" onclick="pressPwdKey('4')">4</button>
+        <button type="button" class="pwd-key" onclick="pressPwdKey('5')">5</button>
+        <button type="button" class="pwd-key" onclick="pressPwdKey('6')">6</button>
+        <button type="button" class="pwd-key" onclick="pressPwdKey('7')">7</button>
+        <button type="button" class="pwd-key" onclick="pressPwdKey('8')">8</button>
+        <button type="button" class="pwd-key" onclick="pressPwdKey('9')">9</button>
+        <button type="button" class="pwd-key" style="font-size:16px; color:#92400e;" onclick="pressPwdKey('CLR')">清除</button>
+        <button type="button" class="pwd-key" onclick="pressPwdKey('0')">0</button>
+        <button type="button" class="pwd-key" style="font-size:18px; color:#b91c1c;" onclick="pressPwdKey('BS')">⌫</button>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:8px;">
+        <button class="btn btn-gray" style="flex:1; justify-content:center;" onclick="closePasswordModal()">取消</button>
+        <button class="btn btn-green" style="flex:1; justify-content:center;" onclick="verifyTeacherPassword()">確認進入</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="dashboardModal" class="modal-backdrop" style="z-index:2050;">
+    <div class="cute-board-card">
+      <div class="cute-top-bar">
+        <div class="cute-title-wrap">
+          <span style="font-size:32px;">📋</span>
+          <span class="cute-title-text">課堂活動數據統計</span>
+        </div>
+
+        <div class="cute-clock-wrap">
+          <div id="boardDateStr" class="cute-date-str">2026年11月10日 星期二</div>
+          <div id="boardClockStr" class="cute-time-str">09:05:04</div>
+        </div>
+
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+          <button id="toggleLockBtn" class="btn btn-red" onclick="toggleClassLock()">🔒 一鍵鎖定課堂</button>
+          <button class="btn btn-blue" onclick="syncCloudRecords()">🔄 同步數據</button>
+          <button class="btn btn-amber" onclick="clearAllRecords()">🗑️ 清空重置</button>
+          <button class="btn btn-dark" onclick="closeDashboardModal()">✖ 關閉</button>
+        </div>
+      </div>
+
+      <div class="cute-main-grid">
+        <div class="cute-panel">
+          <div id="leftPillTag" class="cute-pill-tag cute-pill-pink">第 1 科 / 共 3 科（活動一）</div>
+
+          <div style="display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; margin-top:4px;">
+            <div>
+              <div style="font-size:24px; font-weight:900;">學生答對題數：</div>
+              <div id="focusStudentText" style="font-size:20px; font-weight:800; color:#1e3a8a; margin-top:4px;">
+                全班平均進度 (0/20)
+              </div>
+            </div>
+            <button class="preset-btn" onclick="selectFocusStudent(null)">👥 顯示全班平均</button>
+          </div>
+
+          <div class="chick-track-area">
+            <div class="chick-bar-outer">
+              <div id="chickBarFill" class="chick-bar-fill" style="width: 0%;"></div>
+              <div id="chickRunner" class="chick-runner" style="left: 4%;">🐤</div>
+              <div class="chick-flag">🚩</div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-weight:900;">
+              <span style="font-size:13px; color:#8c7f70;">點擊下方學生可單獨檢視小雞進度</span>
+              <span id="chickPctText" style="font-size:16px; color:#4a4036;">0%</span>
+              <span style="font-size:18px;">正確率 / 完成度</span>
+            </div>
+          </div>
+
+          <div id="stuProgressList" class="stu-progress-list"></div>
+        </div>
+
+        <div class="cute-panel">
+          <div class="cute-pill-tag cute-pill-green">出(缺)席</div>
+
+          <div class="att-grid" style="margin-top:4px;">
+            <div class="att-box att-present">
+              <div style="font-size:16px; font-weight:900;">出席 (已作答)：</div>
+              <div><span id="attPresentNum" class="att-num">0</span> <span style="font-weight:900;">人</span></div>
+            </div>
+            <div class="att-box att-absent">
+              <div style="font-size:16px; font-weight:900;">缺席 (未作答)：</div>
+              <div><span id="attAbsentNum" class="att-num">34</span> <span style="font-weight:900;">人</span></div>
+            </div>
+          </div>
+
+          <div class="speed-king-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span style="font-size:18px; font-weight:900;">🏆 速度王排行榜 (首10人)：</span>
+              <span style="font-size:12px; font-weight:800; color:#9d174d;">按完成題數與時間排序</span>
+            </div>
+            <div id="speedKingList"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cute-activity-tabs">
+        <button id="actTab1" class="cute-act-btn active" onclick="switchBoardActivity('活動一')">
+          <span>活動一</span>
+          <span id="liveTag1" style="font-size:12px; background:#059669; color:#fff; padding:2px 8px; border-radius:99px;">進行中</span>
+        </button>
+        <button id="actTab2" class="cute-act-btn" onclick="switchBoardActivity('活動二')">
+          <span>活動二</span>
+          <span id="liveTag2" class="hidden" style="font-size:12px; background:#059669; color:#fff; padding:2px 8px; border-radius:99px;">進行中</span>
+        </button>
+        <button id="actTab3" class="cute-act-btn" onclick="switchBoardActivity('活動三')">
+          <span>活動三</span>
+          <span id="liveTag3" class="hidden" style="font-size:12px; background:#059669; color:#fff; padding:2px 8px; border-radius:99px;">進行中</span>
+        </button>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:12px; padding-top:10px; border-top:1px dashed #d5cbb8; font-size:13px; font-weight:800; color:#64748b;">
+        <div>💡 提示：點擊「活動一 / 活動二 / 活動三」可切換檢視該回合數據，並同步將全班 iPad 切換至該活動回合！</div>
+        <button class="preset-btn" onclick="toggleRawTable()">📝 展開/收起最新作答明細表</button>
+      </div>
+
+      <div id="rawTableWrap" class="hidden" style="margin-top:12px; background:#fff; border:2px solid #4a4036; border-radius:14px; padding:12px; max-height:200px; overflow-y:auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:13px;">
+          <thead>
+            <tr style="background:#f8fafc; text-align:left; border-bottom:2px solid #cbd5e1;">
+              <th style="padding:6px;">時間</th>
+              <th style="padding:6px;">活動回合</th>
+              <th style="padding:6px;">學生姓名</th>
+              <th style="padding:6px;">題目</th>
+              <th style="padding:6px;">作答</th>
+              <th style="padding:6px;">結果</th>
+            </tr>
+          </thead>
+          <tbody id="recordsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="settingsModal" class="modal-backdrop">
+    <div class="modal-card" style="max-width:600px;">
+      <h3 style="margin-top:0;">⚙️ 後端 Google Sheet 連線設定</h3>
+      <p style="font-size:14px; color:#475569;">已預設綁定你的 Google Apps Script 網址，如需修改可於下方調整：</p>
+      <input id="gasUrlInput" type="url" style="width:100%; padding:10px; border:2px solid #cbd5e1; border-radius:10px; font-size:14px; margin-bottom:12px;" />
+      <div style="display:flex; gap:10px; justify-content:flex-end;">
+        <button class="btn btn-gray" onclick="closeSettingsModal()">關閉</button>
+        <button class="btn btn-blue" onclick="saveGasUrl()">💾 儲存並測試連線</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STUDENTS = [
+      "1 王仕軒", "2 吳映林", "3 阮苡喬", "4 武沛瑤", "5 梁愷喬",
+      "6 陳樂怡", "7 陳蘊瀅", "8 賀梓桐", "9 馮子嫣", "10 黃羽晞",
+      "11 黃紫晴", "12 樊婧瑤", "13 蔣月晴", "14 關咏芯", "15 毛穎聰",
+      "16 王柏言", "17 吳燁朗", "18 李東燁", "19 李健峰", "20 李梓萬",
+      "21 邱子毅", "22 張曉鋒", "23 陳殷齊", "24 勞家謙", "25 曾建言",
+      "26 黃昊霆", "27 黃柏希", "28 黃翊鎧", "29 楊溢曦", "30 蔡一駿",
+      "31 蔡桹顥", "32 鄭行之", "33 盧澤軒", "34 關智誠", "35 訪客"
+    ];
+
+    const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbxjLRCGTKP92CeDNzxIwIcnOxopCOMT5B-FDV2wSsIKNExuczMhiZ5b96ycQUXlxbap2g/exec";
+    let gasUrl = localStorage.getItem("cuboid_gas_url") || DEFAULT_GAS_URL;
+    let localRecords = JSON.parse(localStorage.getItem("cuboid_local_records") || "[]");
+
+    let classStatus = "open";
+    let isTeacherUnlocked = sessionStorage.getItem("cuboid_teacher_unlocked") === "true";
+    let activeActivity = localStorage.getItem("cuboid_active_activity") || "活動一";
+    let viewingActivity = activeActivity;
+    let focusStudentName = null;
+
+    let audioCtx = null;
+    function playSound(type) {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === "suspended") audioCtx.resume();
+        const now = audioCtx.currentTime;
+
+        if (type === "correct") {
+          [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = "triangle";
+            osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+            gain.gain.setValueAtTime(0.18, now + idx * 0.07);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.25);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + idx * 0.07);
+            osc.stop(now + idx * 0.07 + 0.26);
+          });
+        } else if (type === "wrong") {
+          [220, 175].forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = "sawtooth";
+            osc.frequency.setValueAtTime(freq, now + idx * 0.14);
+            gain.gain.setValueAtTime(0.15, now + idx * 0.14);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.14 + 0.28);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + idx * 0.14);
+            osc.stop(now + idx * 0.14 + 0.3);
+          });
+        } else {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.frequency.setValueAtTime(600, now);
+          gain.gain.setValueAtTime(0.06, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.06);
+        }
+      } catch (e) {}
+    }
+
+    function onStudentChange() {
+      playSound("click");
+      completedSet.clear();
+      currentQIndex = 0;
+      loadQuestion();
+    }
+
+    function logoutStudent() {
+      playSound("click");
+      isTeacherUnlocked = false;
+      sessionStorage.removeItem("cuboid_teacher_unlocked");
+      updateLockBtnUI();
+      const sel = document.getElementById("studentSelect");
+      sel.value = "";
+      completedSet.clear();
+      currentQIndex = 0;
+      loadQuestion();
+      alert("✅ 已登出學生身份！下一位同學請先在上方選單選擇自己的姓名。");
+    }
+
+    let shapeType = "cuboid";
+    let dimL = 6, dimW = 5, dimH = 4;
+    let foldProgress = 0;
+    let targetFold = 0;
+    let animFrameId = null;
+    let isWireframe = false;
+
+    let rotX = -0.48;
+    let rotY = 0.62;
+    let isDragging = false;
+    let lastX = 0, lastY = 0;
+
+    function rotVecX(v, a) {
+      const c = Math.cos(a), s = Math.sin(a);
+      return [v[0], v[1] * c - v[2] * s, v[1] * s + v[2] * c];
+    }
+    function rotVecY(v, a) {
+      const c = Math.cos(a), s = Math.sin(a);
+      return [v[0] * c + v[2] * s, v[1], -v[0] * s + v[2] * c];
+    }
+    function rotVecZ(v, a) {
+      const c = Math.cos(a), s = Math.sin(a);
+      return [v[0] * c - v[1] * s, v[0] * s + v[1] * c, v[2]];
+    }
+    function addVec(a, b) {
+      return [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+    }
+    function subVec(a, b) {
+      return [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+    }
+
+    function buildFaces(L, W, H, t) {
+      const angle = (1 - t) * (Math.PI / 2);
+      const faces = [];
+
+      const bottomVerts = [
+        [-L / 2, 0, -W / 2],
+        [ L / 2, 0, -W / 2],
+        [ L / 2, 0,  W / 2],
+        [-L / 2, 0,  W / 2]
+      ];
+      faces.push({ name: "下", dimText: `${L}×${W}=${L*W}`, color: "#f472b6", verts: bottomVerts });
+
+      const frontFlat = [
+        [-L / 2, 0, W / 2],
+        [ L / 2, 0, W / 2],
+        [ L / 2, 0, W / 2 + H],
+        [-L / 2, 0, W / 2 + H]
+      ];
+      const frontVerts = frontFlat.map(p => {
+        const rel = subVec(p, [0, 0, W / 2]);
+        return addVec(rotVecX(rel, -angle), [0, 0, W / 2]);
+      });
+      faces.push({ name: "前", dimText: `${L}×${H}=${L*H}`, color: "#38bdf8", verts: frontVerts });
+
+      const backFlat = [
+        [-L / 2, 0, -W / 2],
+        [ L / 2, 0, -W / 2],
+        [ L / 2, 0, -W / 2 - H],
+        [-L / 2, 0, -W / 2 - H]
+      ];
+      const backVerts = backFlat.map(p => {
+        const rel = subVec(p, [0, 0, -W / 2]);
+        return addVec(rotVecX(rel, angle), [0, 0, -W / 2]);
+      });
+      faces.push({ name: "後", dimText: `${L}×${H}=${L*H}`, color: "#38bdf8", verts: backVerts });
+
+      const topFlat = [
+        [-L / 2, 0, -W / 2 - H],
+        [ L / 2, 0, -W / 2 - H],
+        [ L / 2, 0, -W / 2 - H - W],
+        [-L / 2, 0, -W / 2 - H - W]
+      ];
+      const topVerts = topFlat.map(p => {
+        const rel1 = subVec(p, [0, 0, -W / 2 - H]);
+        const r1 = addVec(rotVecX(rel1, angle), [0, 0, -W / 2 - H]);
+        const rel2 = subVec(r1, [0, 0, -W / 2]);
+        return addVec(rotVecX(rel2, angle), [0, 0, -W / 2]);
+      });
+      faces.push({ name: "上", dimText: `${L}×${W}=${L*W}`, color: "#f472b6", verts: topVerts });
+
+      const leftFlat = [
+        [-L / 2, 0, -W / 2],
+        [-L / 2, 0,  W / 2],
+        [-L / 2 - H, 0,  W / 2],
+        [-L / 2 - H, 0, -W / 2]
+      ];
+      const leftVerts = leftFlat.map(p => {
+        const rel = subVec(p, [-L / 2, 0, 0]);
+        return addVec(rotVecZ(rel, -angle), [-L / 2, 0, 0]);
+      });
+      faces.push({ name: "左", dimText: `${W}×${H}=${W*H}`, color: "#4ade80", verts: leftVerts });
+
+      const rightFlat = [
+        [L / 2, 0, -W / 2],
+        [L / 2, 0,  W / 2],
+        [L / 2 + H, 0,  W / 2],
+        [L / 2 + H, 0, -W / 2]
+      ];
+      const rightVerts = rightFlat.map(p => {
+        const rel = subVec(p, [L / 2, 0, 0]);
+        return addVec(rotVecZ(rel, angle), [L / 2, 0, 0]);
+      });
+      faces.push({ name: "右", dimText: `${W}×${H}=${W*H}`, color: "#4ade80", verts: rightVerts });
+
+      return faces;
+    }
+
+    function render3D() {
+      const canvas = document.getElementById("canvas3d");
+      if (!canvas) return;
+      const rect = canvas.parentElement.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+
+      const ctx = canvas.getContext("2d");
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const cw = rect.width;
+      const ch = rect.height;
+      ctx.clearRect(0, 0, cw, ch);
+
+      const maxSpan = (dimL + dimH * 2) + (dimW * 2 + dimH * 2);
+      const scale = Math.min(cw, ch) / Math.max(15, maxSpan * 0.58);
+      const yCenterOffset = (1 - foldProgress) * (dimH * 0.45);
+
+      function project(pt) {
+        const centered = [pt[0], pt[1] - yCenterOffset, pt[2]];
+        const rY = rotVecY(centered, rotY);
+        const rXY = rotVecX(rY, rotX);
+        const fov = 36;
+        const p = fov / (fov + rXY[2] * 0.15 + 12);
+        return {
+          x: cw / 2 + rXY[0] * scale * p * 1.35,
+          y: ch / 2 - rXY[1] * scale * p * 1.35,
+          z: rXY[2]
+        };
+      }
+
+      const faces = buildFaces(dimL, dimW, dimH, foldProgress);
+      const projected = faces.map(f => {
+        const pts = f.verts.map(project);
+        const avgZ = pts.reduce((s, p) => s + p.z, 0) / pts.length;
+        const cx = pts.reduce((s, p) => s + p.x, 0) / pts.length;
+        const cy = pts.reduce((s, p) => s + p.y, 0) / pts.length;
+        return { ...f, pts, avgZ, cx, cy };
+      });
+
+      projected.sort((a, b) => b.avgZ - a.avgZ);
+
+      projected.forEach(f => {
+        ctx.beginPath();
+        ctx.moveTo(f.pts[0].x, f.pts[0].y);
+        for (let i = 1; i < f.pts.length; i++) {
+          ctx.lineTo(f.pts[i].x, f.pts[i].y);
+        }
+        ctx.closePath();
+
+        if (!isWireframe) {
+          ctx.fillStyle = f.color + "DF";
+          ctx.fill();
+          ctx.lineWidth = 2.5;
+          ctx.strokeStyle = "#1e293b";
+          ctx.stroke();
+
+          if (foldProgress > 0.45) {
+            ctx.fillStyle = "rgba(255,255,255,0.92)";
+            ctx.beginPath();
+            ctx.roundRect ? ctx.roundRect(f.cx - 34, f.cy - 18, 68, 36, 8) : ctx.rect(f.cx - 34, f.cy - 18, 68, 36);
+            ctx.fill();
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = "#334155";
+            ctx.stroke();
+
+            ctx.fillStyle = "#0f172a";
+            ctx.font = "900 14px sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(f.name, f.cx, f.cy - 7);
+            ctx.fillStyle = "#1d4ed8";
+            ctx.font = "800 11px sans-serif";
+            ctx.fillText(f.dimText, f.cx, f.cy + 9);
+          } else {
+            ctx.fillStyle = "rgba(255,255,255,0.9)";
+            ctx.beginPath();
+            ctx.arc(f.cx, f.cy, 17, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = "#334155";
+            ctx.stroke();
+
+            ctx.fillStyle = "#0f172a";
+            ctx.font = "900 16px sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(f.name, f.cx, f.cy);
+          }
+        } else {
+          ctx.fillStyle = "rgba(59, 130, 246, 0.04)";
+          ctx.fill();
+          ctx.lineWidth = 3.2;
+          ctx.strokeStyle = "#1d4ed8";
+          ctx.stroke();
+        }
+      });
+
+      if (isWireframe) {
+        const vMap = new Map();
+        faces.forEach(f => {
+          f.verts.forEach(v => {
+            const key = v.map(n => Math.round(n * 100)).join(",");
+            if (!vMap.has(key)) vMap.set(key, v);
+          });
+        });
+        vMap.forEach(v => {
+          const p = project(v);
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 6.5, 0, Math.PI * 2);
+          ctx.fillStyle = "#ef4444";
+          ctx.fill();
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = "#ffffff";
+          ctx.stroke();
+        });
+      }
+    }
+
+    function setShapeType(type) {
+      playSound("click");
+      shapeType = type;
+      document.getElementById("shapeBtnCuboid").className = type === "cuboid" ? "btn btn-blue" : "btn btn-gray";
+      document.getElementById("shapeBtnCube").className = type === "cube" ? "btn btn-blue" : "btn btn-gray";
+
+      if (type === "cube") {
+        document.getElementById("dimTitle").textContent = "📏 調整正方體整數棱長 (單位: cm)";
+        document.getElementById("labelL").textContent = "棱長 (a)：";
+        document.getElementById("groupW").classList.add("hidden");
+        document.getElementById("groupH").classList.add("hidden");
+        dimW = dimL;
+        dimH = dimL;
+      } else {
+        document.getElementById("dimTitle").textContent = "📏 調整長方體整數尺寸 (單位: cm)";
+        document.getElementById("labelL").textContent = "長 (L)：";
+        document.getElementById("groupW").classList.remove("hidden");
+        document.getElementById("groupH").classList.remove("hidden");
+      }
+      updateDimensions();
+    }
+
+    function applyPreset(type, l, w, h) {
+      document.getElementById("sliderL").value = Math.round(l);
+      document.getElementById("sliderW").value = Math.round(w);
+      document.getElementById("sliderH").value = Math.round(h);
+      setShapeType(type);
+    }
+
+    function updateDimensions() {
+      dimL = parseInt(document.getElementById("sliderL").value, 10);
+      if (shapeType === "cube") {
+        dimW = dimL;
+        dimH = dimL;
+      } else {
+        dimW = parseInt(document.getElementById("sliderW").value, 10);
+        dimH = parseInt(document.getElementById("sliderH").value, 10);
+      }
+
+      document.getElementById("valL").textContent = dimL + " cm";
+      document.getElementById("valW").textContent = dimW + " cm";
+      document.getElementById("valH").textContent = dimH + " cm";
+
+      const areaTB = dimL * dimW;
+      const areaFB = dimL * dimH;
+      const areaLR = dimW * dimH;
+
+      const tb = areaTB * 2;
+      const fb = areaFB * 2;
+      const lr = areaLR * 2;
+      const total = tb + fb + lr;
+
+      document.getElementById("pairTopBottom").textContent = `${dimL} × ${dimW} × 2 = ${tb} cm²`;
+      document.getElementById("pairFrontBack").textContent = `${dimL} × ${dimH} × 2 = ${fb} cm²`;
+      document.getElementById("pairLeftRight").textContent = `${dimW} × ${dimH} × 2 = ${lr} cm²`;
+
+      if (shapeType === "cube") {
+        document.getElementById("formulaSummary").textContent = `正方體表面積 = ${dimL} × ${dimL} × 6 = ${areaTB} × 6`;
+      } else {
+        document.getElementById("formulaSummary").textContent = `(${dimL}×${dimW} + ${dimL}×${dimH} + ${dimW}×${dimH}) × 2 = (${areaTB} + ${areaFB} + ${areaLR}) × 2`;
+      }
+      document.getElementById("totalAreaText").textContent = `${total} cm²`;
+      render3D();
+    }
+
+    function toggleFold() {
+      playSound("click");
+      if (isWireframe && targetFold === 0) {
+        isWireframe = false;
+        updateWireframeUI();
+      }
+      targetFold = targetFold < 0.5 ? 1 : 0;
+      animateFold();
+    }
+
+    function animateFold() {
+      if (animFrameId) cancelAnimationFrame(animFrameId);
+      function step() {
+        const diff = targetFold - foldProgress;
+        if (Math.abs(diff) < 0.015) {
+          foldProgress = targetFold;
+          document.getElementById("foldSlider").value = Math.round(foldProgress * 100);
+          updateFoldUI();
+          render3D();
+          return;
+        }
+        foldProgress += diff * 0.14;
+        document.getElementById("foldSlider").value = Math.round(foldProgress * 100);
+        updateFoldUI();
+        render3D();
+        animFrameId = requestAnimationFrame(step);
+      }
+      animFrameId = requestAnimationFrame(step);
+    }
+
+    function onFoldSliderInput(val) {
+      foldProgress = parseInt(val, 10) / 100;
+      targetFold = foldProgress > 0.5 ? 1 : 0;
+      updateFoldUI();
+      render3D();
+    }
+
+    function updateFoldUI() {
+      const btn = document.getElementById("foldToggleBtn");
+      const status = document.getElementById("modeStatusText");
+      if (foldProgress > 0.5) {
+        btn.textContent = "📦 按一下摺回立體圖形";
+        status.textContent = "目前狀態：展開圖（紙樣）模式 — 顯示上、下、前、後、左、右與整數面積";
+      } else {
+        btn.textContent = "📖 按一下展開紙樣";
+        status.textContent = isWireframe ? "目前狀態：透視圖模式（12條棱與8個頂點）" : "目前狀態：立體圖形模式";
+      }
+    }
+
+    function toggleWireframe() {
+      playSound("click");
+      isWireframe = !isWireframe;
+      if (isWireframe && foldProgress > 0) {
+        targetFold = 0;
+        animateFold();
+      }
+      updateWireframeUI();
+      updateFoldUI();
+      render3D();
+    }
+
+    function updateWireframeUI() {
+      const btn = document.getElementById("wireframeBtn");
+      btn.className = isWireframe ? "btn btn-purple active" : "btn btn-purple";
+    }
+
+    function resetCamera() {
+      playSound("click");
+      rotX = -0.48;
+      rotY = 0.62;
+      render3D();
+    }
+
+    function initCanvasTouch() {
+      const canvas = document.getElementById("canvas3d");
+      canvas.addEventListener("pointerdown", e => {
+        isDragging = true;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        canvas.setPointerCapture(e.pointerId);
+      });
+      canvas.addEventListener("pointermove", e => {
+        if (!isDragging) return;
+        const dx = e.clientX - lastX;
+        const dy = e.clientY - lastY;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        rotY += dx * 0.011;
+        rotX = Math.max(-1.45, Math.min(1.45, rotX + dy * 0.011));
+        render3D();
+      });
+      canvas.addEventListener("pointerup", () => { isDragging = false; });
+      canvas.addEventListener("pointercancel", () => { isDragging = false; });
+      window.addEventListener("resize", render3D);
+    }
+
+    function drawBoxSvg(L, W, H, unit, colors, captionText) {
+      const maxD = Math.max(L, W, H, 1);
+      const s = 105 / maxD;
+      const wPx = Math.max(65, Math.min(145, L * s));
+      const hPx = Math.max(55, Math.min(125, H * s));
+      const dPx = Math.max(32, Math.min(68, W * s * 0.55));
+
+      const x0 = 65;
+      const y0 = 185;
+      const dx = dPx * 0.75;
+      const dy = -dPx * 0.6;
+
+      const fTL = [x0, y0 - hPx];
+      const fTR = [x0 + wPx, y0 - hPx];
+      const fBR = [x0 + wPx, y0];
+      const fBL = [x0, y0];
+
+      const bTL = [fTL[0] + dx, fTL[1] + dy];
+      const bTR = [fTR[0] + dx, fTR[1] + dy];
+      const bBR = [fBR[0] + dx, fBR[1] + dy];
+      const bBL = [fBL[0] + dx, fBL[1] + dy];
+
+      const topC = colors.top || "#fbcfe8";
+      const frontC = colors.front || "#bae6fd";
+      const rightC = colors.right || "#bbf7d0";
+
+      return `
+        <svg viewBox="0 0 310 230" width="100%" height="220">
+          ${colors.openTop ? `
+            <polygon points="${fTL.join(",")},${bTL.join(",")},${bTR.join(",")},${fTR.join(",")}" fill="#e2e8f0" stroke="#475569" stroke-width="2" stroke-dasharray="4,3"/>
+            <text x="${(fTL[0]+bTR[0])/2}" y="${(fTL[1]+bTR[1])/2}" font-size="12" font-weight="bold" fill="#dc2626" text-anchor="middle">（無蓋）</text>
+          ` : `
+            <polygon points="${fTL.join(",")},${bTL.join(",")},${bTR.join(",")},${fTR.join(",")}" fill="${topC}" stroke="#1e293b" stroke-width="2.2"/>
+          `}
+          <polygon points="${fTR.join(",")},${bTR.join(",")},${bBR.join(",")},${fBR.join(",")}" fill="${rightC}" stroke="#1e293b" stroke-width="2.2"/>
+          <polygon points="${fTL.join(",")},${fTR.join(",")},${fBR.join(",")},${fBL.join(",")}" fill="${frontC}" stroke="#1e293b" stroke-width="2.2"/>
+          <line x1="${bTL[0]}" y1="${bTL[1]}" x2="${bBL[0]}" y2="${bBL[1]}" stroke="#475569" stroke-width="1.6" stroke-dasharray="4,4"/>
+          <line x1="${bBL[0]}" y1="${bBL[1]}" x2="${fBL[0]}" y2="${fBL[1]}" stroke="#475569" stroke-width="1.6" stroke-dasharray="4,4"/>
+          <line x1="${bBL[0]}" y1="${bBL[1]}" x2="${bBR[0]}" y2="${bBR[1]}" stroke="#475569" stroke-width="1.6" stroke-dasharray="4,4"/>
+          <text x="${(fBL[0]+fBR[0])/2}" y="${y0+20}" font-size="14" font-weight="900" fill="#1d4ed8" text-anchor="middle">${L} ${unit}</text>
+          <text x="${(fBR[0]+bBR[0])/2+26}" y="${(fBR[1]+bBR[1])/2+6}" font-size="14" font-weight="900" fill="#047857" text-anchor="middle">${W} ${unit}</text>
+          <text x="${x0-10}" y="${y0-hPx/2}" font-size="14" font-weight="900" fill="#b45309" text-anchor="end">${H} ${unit}</text>
+          ${captionText ? `<text x="155" y="20" font-size="13" font-weight="bold" fill="#334155" text-anchor="middle">${captionText}</text>` : ""}
+        </svg>
+      `;
+    }
+
+    const QUESTIONS = [
+      {
+        id: 1, type: "正方體", source: "第9課 練習9 第5題",
+        prompt: "右圖是一個棱長 5 cm 的正方體，計算它「右側面」（橙色面）的面積是多少 cm²？",
+        answer: 25, unit: "cm²",
+        hint: "正方體的每一個面都是正方形（共有 1 個着色面）。",
+        formulaCard: "正方形面積 ＝ 棱長 × 棱長",
+        stdFormula: "5 × 5 = 25",
+        svg: () => drawBoxSvg(5, 5, 5, "cm", { top: "#ffffff", front: "#ffffff", right: "#f97316" }, "計算橙色右側面的面積")
+      },
+      {
+        id: 2, type: "正方體", source: "第9課 練習9 第2題",
+        prompt: "右圖的正方體棱長是 4 厘米，它共有 6 個完全相同的面。求這個正方體的表面積是多少平方厘米？",
+        answer: 96, unit: "平方厘米",
+        hint: "正方體共有 6 個完全相同的正方形面，先算 1 個面的面積，再乘以 6。",
+        formulaCard: "正方體的表面積 ＝ 棱長 × 棱長 × 6",
+        stdFormula: "4 × 4 × 6 = 96",
+        svg: () => drawBoxSvg(4, 4, 4, "厘米", { top: "#bae6fd", front: "#7dd3fc", right: "#38bdf8" }, "正方體 6 個面的總面積")
+      },
+      {
+        id: 3, type: "正方體", source: "第9課 練習9 第3題B",
+        prompt: "由棱長 1 厘米的小正方體拼成一個長 3 厘米、闊 3 厘米、高 3 厘米的大正方體，它的表面積是多少平方厘米？",
+        answer: 54, unit: "平方厘米",
+        hint: "這個大正方體共有 6 個相同的面，先找出大正方體的棱長是多少厘米。",
+        formulaCard: "正方體的表面積 ＝ 棱長 × 棱長 × 6",
+        stdFormula: "3 × 3 × 6 = 54",
+        svg: () => drawBoxSvg(3, 3, 3, "厘米", { top: "#c4b5fd", front: "#a78bfa", right: "#8b5cf6" }, "3×3×3 小正方體拼成的大正方體")
+      },
+      {
+        id: 4, type: "正方體", source: "第10課 練習10 第5題",
+        prompt: "一個正方體的長、闊、高都是 8 dm，它的表面積是多少 dm²？",
+        answer: 384, unit: "dm²",
+        hint: "正方體共有 6 個完全相同的正方形面。",
+        formulaCard: "正方體的表面積 ＝ 棱長 × 棱長 × 6",
+        stdFormula: "8 × 8 × 6 = 384",
+        svg: () => drawBoxSvg(8, 8, 8, "dm", { top: "#fde68a", front: "#fcd34d", right: "#fbbf24" }, "")
+      },
+      {
+        id: 5, type: "正方體", source: "第10課 堂課練習",
+        prompt: "右面正方體的棱長是 11 dm，它的表面積是多少 dm²？",
+        answer: 726, unit: "dm²",
+        hint: "正方體有 6 個完全相同的正方形面，把一個面的面積乘以 6。",
+        formulaCard: "正方體的表面積 ＝ 棱長 × 棱長 × 6",
+        stdFormula: "11 × 11 × 6 = 726",
+        svg: () => drawBoxSvg(11, 11, 11, "dm", { top: "#e9d5ff", front: "#d8b4fe", right: "#c084fc" }, "課本堂課練習")
+      },
+      {
+        id: 6, type: "正方體", source: "第10課 例題2 (禮物盒)",
+        prompt: "一個正方體禮物盒的棱長是 18 厘米，它的表面積是多少平方厘米？",
+        answer: 1944, unit: "平方厘米",
+        hint: "正方體禮物盒共有 6 個相同的正方形面。",
+        formulaCard: "正方體的表面積 ＝ 棱長 × 棱長 × 6",
+        stdFormula: "18 × 18 × 6 = 1944",
+        svg: () => drawBoxSvg(18, 18, 18, "厘米", { top: "#fbcfe8", front: "#f9a8d4", right: "#f472b6" }, "🎁 正方體禮物盒")
+      },
+      {
+        id: 7, type: "正方體", source: "第10課 例題3 (無蓋玻璃魚缸)",
+        prompt: "一個正方體玻璃魚缸的棱長是 34 cm（魚缸沒有上蓋，只有 5 個面）。製作這個魚缸最少需要玻璃多少 cm²？",
+        answer: 5780, unit: "cm²",
+        hint: "注意：這個玻璃魚缸是「沒有上蓋」的，所以只需計算 5 個正方形面的總面積！",
+        formulaCard: "無蓋正方體表面積（5個面）＝ 棱長 × 棱長 × 5",
+        stdFormula: "34 × 34 × 5 = 5780",
+        svg: () => drawBoxSvg(34, 34, 34, "cm", { openTop: true, front: "#7dd3fc", right: "#38bdf8" }, "🐠 無蓋正方體玻璃魚缸 (算5個面)")
+      },
+      {
+        id: 8, type: "正方體", source: "第10課 練習10 第3題 (餅乾盒商標紙)",
+        prompt: "一個正方體餅乾盒的棱長是 12 厘米。如果沿餅乾盒的周圍（前、後、左、右 4 個面）貼上一張商標紙，商標紙的面積最少要多少平方厘米？",
+        answer: 576, unit: "平方厘米",
+        hint: "注意：沿周圍貼商標紙，上面和下面都不貼，所以只需計算前、後、左、右共 4 個面的面積！",
+        formulaCard: "正方體四周表面積（4個面）＝ 棱長 × 棱長 × 4",
+        stdFormula: "12 × 12 × 4 = 576",
+        svg: () => drawBoxSvg(12, 12, 12, "厘米", { top: "#e2e8f0", front: "#f9a8d4", right: "#f472b6" }, "🍪 沿周圍(前、後、左、右)貼商標紙")
+      },
+      {
+        id: 9, type: "正方體", source: "應用延伸題 (無蓋正方體收納盒)",
+        prompt: "小嫣用硬卡紙做一個沒有上蓋的正方體收納盒，棱長是 10 cm，最少需要硬卡紙多少 cm²？",
+        answer: 500, unit: "cm²",
+        hint: "注意：收納盒「沒有上蓋」，少了上面 1 個面，共有 5 個正方形面。",
+        formulaCard: "無蓋正方體表面積（5個面）＝ 棱長 × 棱長 × 5",
+        stdFormula: "10 × 10 × 5 = 500",
+        svg: () => drawBoxSvg(10, 10, 10, "cm", { openTop: true, front: "#a7f3d0", right: "#6ee7b7" }, "無蓋正方體收納盒 (5個面)")
+      },
+      {
+        id: 10, type: "正方體", source: "應用延伸題 (正方體木塊塗漆)",
+        prompt: "把一個棱長 15 cm 的正方體積木 6 個面全部塗上顏料，塗顏料的總面積是多少 cm²？",
+        answer: 1350, unit: "cm²",
+        hint: "正方體積木共有 6 個完全相同的正方形面。",
+        formulaCard: "正方體的表面積 ＝ 棱長 × 棱長 × 6",
+        stdFormula: "15 × 15 × 6 = 1350",
+        svg: () => drawBoxSvg(15, 15, 15, "cm", { top: "#fde047", front: "#facc15", right: "#eab308" }, "正方體積木 6 個面塗漆")
+      },
+      {
+        id: 11, type: "長方體", source: "第9課 練習9 第4題",
+        prompt: "右圖長方體長 7 cm、闊 5 cm、高 2 cm，計算它「右側面」（橙色面）的面積是多少 cm²？",
+        answer: 10, unit: "cm²",
+        hint: "先觀察右側面（橙色長方形）的兩條鄰邊分別是長方體的「闊」和「高」，只算這 1 個面的面積。",
+        formulaCard: "長方形右側面面積 ＝ 闊 × 高",
+        stdFormula: "5 × 2 = 10",
+        svg: () => drawBoxSvg(7, 5, 2, "cm", { top: "#ffffff", front: "#ffffff", right: "#f97316" }, "計算長方體橙色右側面的面積")
+      },
+      {
+        id: 12, type: "長方體", source: "第10課 例題1 (日軒做紙盒)",
+        prompt: "日軒打算用硬卡紙做一個長 6 厘米、闊 5 厘米、高 4 厘米的長方體紙盒。他最少要用硬卡紙多少平方厘米？",
+        answer: 148, unit: "平方厘米",
+        hint: "長方體有 6 個面（上和下相同、前和後相同、左和右相同），先算出 3 組不同面的面積之和，再乘以 2。",
+        formulaCard: "長方體的表面積 ＝ (長 × 闊 ＋ 闊 × 高 ＋ 高 × 長) × 2",
+        stdFormula: "(6 × 5 + 5 × 4 + 4 × 6) × 2 = 148",
+        svg: () => drawBoxSvg(6, 5, 4, "厘米", { top: "#bae6fd", front: "#7dd3fc", right: "#38bdf8" }, "日軒製作長方體硬卡紙盒")
+      },
+      {
+        id: 13, type: "長方體", source: "第10課 堂課練習",
+        prompt: "右面長方體長 4 米、闊 3 米、高 2 米，它的表面積是多少平方米？",
+        answer: 52, unit: "平方米",
+        hint: "長方體有 6 個面（3 對相對的面完全相同），運用長方體表面積公式計算。",
+        formulaCard: "長方體的表面積 ＝ (長 × 闊 ＋ 闊 × 高 ＋ 高 × 長) × 2",
+        stdFormula: "(4 × 3 + 3 × 2 + 2 × 4) × 2 = 52",
+        svg: () => drawBoxSvg(4, 3, 2, "米", { top: "#fbcfe8", front: "#f9a8d4", right: "#f472b6" }, "課本堂課練習")
+      },
+      {
+        id: 14, type: "長方體", source: "第10課 練習10 第1題 (長方體 B)",
+        prompt: "長方體 B 的長是 3 cm、闊是 2 cm、高是 3 cm，它的表面積是多少 cm²？",
+        answer: 42, unit: "cm²",
+        hint: "長方體共有 6 個面，把上/下、前/後、左/右三對面的面積相加。",
+        formulaCard: "長方體的表面積 ＝ (長 × 闊 ＋ 闊 × 高 ＋ 高 × 長) × 2",
+        stdFormula: "(3 × 2 + 2 × 3 + 3 × 3) × 2 = 42",
+        svg: () => drawBoxSvg(3, 2, 3, "cm", { top: "#fb923c", front: "#7dd3fc", right: "#a3e635" }, "長方體 B")
+      },
+      {
+        id: 15, type: "長方體", source: "第10課 練習10 第1題 (長方體 C)",
+        prompt: "長方體 C 的長是 2 cm、闊是 2 cm、高是 4 cm，它的表面積是多少 cm²？",
+        answer: 40, unit: "cm²",
+        hint: "長方體共有 6 個面，分別找出長、闊、高並代入長方體表面積公式。",
+        formulaCard: "長方體的表面積 ＝ (長 × 闊 ＋ 闊 × 高 ＋ 高 × 長) × 2",
+        stdFormula: "(2 × 2 + 2 × 4 + 4 × 2) × 2 = 40",
+        svg: () => drawBoxSvg(2, 2, 4, "cm", { top: "#fb923c", front: "#7dd3fc", right: "#a3e635" }, "長方體 C")
+      },
+      {
+        id: 16, type: "長方體", source: "第10課 練習10 第4題",
+        prompt: "一個長方體長 5 cm、闊 4 cm、高 2 cm，它的表面積是多少 cm²？",
+        answer: 76, unit: "cm²",
+        hint: "長方體共有 6 個面，共有 3 對相對的面。",
+        formulaCard: "長方體的表面積 ＝ (長 × 闊 ＋ 闊 × 高 ＋ 高 × 長) × 2",
+        stdFormula: "(5 × 4 + 4 × 2 + 2 × 5) × 2 = 76",
+        svg: () => drawBoxSvg(5, 4, 2, "cm", { top: "#c4b5fd", front: "#a78bfa", right: "#8b5cf6" }, "")
+      },
+      {
+        id: 17, type: "長方體", source: "第10課 練習10 第6題",
+        prompt: "一個長方體長 12 m、闊 12 m、高 10 m，它的表面積是多少 m²？",
+        answer: 768, unit: "m²",
+        hint: "長方體共有 6 個面，先算出一組（上、前、右）三個面的面積和，再乘以 2。",
+        formulaCard: "長方體的表面積 ＝ (長 × 闊 ＋ 闊 × 高 ＋ 高 × 長) × 2",
+        stdFormula: "(12 × 12 + 12 × 10 + 10 × 12) × 2 = 768",
+        svg: () => drawBoxSvg(12, 12, 10, "m", { top: "#fde68a", front: "#fcd34d", right: "#fbbf24" }, "")
+      },
+      {
+        id: 18, type: "長方體", source: "第10課 練習10 第2題a (鐵盒)",
+        prompt: "一個長方體鐵盒長 18 cm、闊 15 cm、高 12 cm。做這個有蓋鐵盒最少要用鐵皮多少 cm²？",
+        answer: 1332, unit: "cm²",
+        hint: "有蓋長方體鐵盒共有完整的 6 個面，請利用長方體表面積公式計算。",
+        formulaCard: "長方體的表面積 ＝ (長 × 闊 ＋ 闊 × 高 ＋ 高 × 長) × 2",
+        stdFormula: "(18 × 15 + 15 × 12 + 12 × 18) × 2 = 1332",
+        svg: () => drawBoxSvg(18, 15, 12, "cm", { top: "#cbd5e1", front: "#94a3b8", right: "#64748b" }, "🥫 有蓋長方體鐵盒 (6個面)")
+      },
+      {
+        id: 19, type: "長方體", source: "第10課 練習10 第2題b (無蓋鐵盒)",
+        prompt: "承上題，一個長方體鐵盒長 18 cm、闊 15 cm、高 12 cm。如果「不做上蓋」，最少要用鐵皮多少 cm²？",
+        answer: 1062, unit: "cm²",
+        hint: "注意：「不做上蓋」代表只有 5 個面！只有 1 個底面（長×闊），加上前、後 2 個面（長×高×2）與左、右 2 個面（闊×高×2）。",
+        formulaCard: "無蓋長方體表面積（5個面）＝ 長 × 闊 ＋ (長 × 高 ＋ 闊 × 高) × 2",
+        stdFormula: "18 × 15 + (18 × 12 + 15 × 12) × 2 = 1062",
+        svg: () => drawBoxSvg(18, 15, 12, "cm", { openTop: true, front: "#94a3b8", right: "#64748b" }, "🥫 無蓋長方體鐵盒 (只算5個面)")
+      },
+      {
+        id: 20, type: "長方體", source: "第9課 練習9 第1題延伸",
+        prompt: "右圖長方體長 8 厘米、闊 6 厘米、高 4 厘米（上面藍色、前面紅色、右面綠色），它的總表面積是多少平方厘米？",
+        answer: 208, unit: "平方厘米",
+        hint: "長方體共有 6 個面（藍、紅、綠各代表一對相對的面），運用長方體表面積公式計算。",
+        formulaCard: "長方體的表面積 ＝ (長 × 闊 ＋ 闊 × 高 ＋ 高 × 長) × 2",
+        stdFormula: "(8 × 6 + 6 × 4 + 4 × 8) × 2 = 208",
+        svg: () => drawBoxSvg(8, 6, 4, "厘米", { top: "#38bdf8", front: "#f87171", right: "#a3e635" }, "藍(上)、紅(前)、綠(右)")
+      }
+    ];
+
+    let currentQIndex = 0;
+    let completedSet = new Set();
+    let activeInputTarget = "formula"; // 'formula' | 'answer'
+
+    const PRAISE_OK = [
+      "🌟 太棒了！算式與答案都完全正確，徹底掌握表面積的計算！",
+      "🎉 答對了！你的空間感與列式能力都很出色！",
+      "👏 非常準確！繼續保持這份專注力，挑戰下一題吧！",
+      "✨ 完全正確！你已經是長方體與正方體表面積小專家了！"
+    ];
+    const PRAISE_ERR = [
+      "💪 別氣餒，差一點點而已！看一看下方文字提示與公式，自己動腦筋再試一次！",
+      "🌱 錯誤是學習的好機會！仔細檢查題目總共要算幾個面，再列式算一次吧！",
+      "🚀 沒關係，慢慢來！對照公式檢查每個面的長和闊，加油！"
+    ];
+
+    function setActiveInput(target) {
+      activeInputTarget = target;
+      const fInput = document.getElementById("formulaInput");
+      const aInput = document.getElementById("answerInput");
+      if (!fInput || !aInput) return;
+      if (target === "formula") {
+        fInput.classList.add("active-box");
+        aInput.classList.remove("active-box");
+      } else {
+        aInput.classList.add("active-box");
+        fInput.classList.remove("active-box");
+      }
+    }
+
+    function renderProgressDots() {
+      const container = document.getElementById("progressDots");
+      container.innerHTML = "";
+      QUESTIONS.forEach((q, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "q-dot" + (idx === currentQIndex ? " current" : "") + (completedSet.has(q.id) ? " done" : "");
+        btn.textContent = q.id;
+        btn.onclick = () => {
+          currentQIndex = idx;
+          loadQuestion();
+        };
+        container.appendChild(btn);
+      });
+      document.getElementById("completedCount").textContent = completedSet.size;
+    }
+
+    function loadQuestion() {
+      const q = QUESTIONS[currentQIndex];
+      document.getElementById("qBadgeType").textContent = q.type === "正方體" ? "🎲 正方體 (第 1-10 題)" : "📦 長方體 (第 11-20 題)";
+      document.getElementById("qBadgeType").style.background = q.type === "正方體" ? "#7c3aed" : "#2563eb";
+      document.getElementById("qProgressTitle").textContent = `第 ${q.id} / 20 題`;
+      document.getElementById("qSourceTag").textContent = `📖 課本依據：${q.source}`;
+      document.getElementById("questionPrompt").textContent = q.prompt;
+      document.getElementById("questionUnit").textContent = q.unit;
+      document.getElementById("questionSvgBox").innerHTML = q.svg();
+      document.getElementById("questionCaption").textContent = `題型：${q.type}表面積計算`;
+
+      const fInput = document.getElementById("formulaInput");
+      const aInput = document.getElementById("answerInput");
+      fInput.value = "";
+      aInput.value = "";
+      fInput.disabled = false;
+      aInput.disabled = false;
+      setActiveInput("formula");
+
+      document.getElementById("feedbackBox").className = "feedback-box hidden";
+      document.getElementById("submitBtn").classList.remove("hidden");
+      document.getElementById("nextBtn").classList.add("hidden");
+      renderProgressDots();
+    }
+
+    function pressKey(k) {
+      playSound("click");
+      const fInput = document.getElementById("formulaInput");
+      const aInput = document.getElementById("answerInput");
+      if (aInput.disabled) return;
+
+      if (k === "=") {
+        setActiveInput("answer");
+        aInput.focus();
+        return;
+      }
+
+      // 若按了運算符號，自動確保寫入「算式格」
+      if (["×", "+", "-", "(", ")"].includes(k)) {
+        setActiveInput("formula");
+      }
+
+      const targetEl = activeInputTarget === "formula" ? fInput : aInput;
+      if (k === "BS") {
+        targetEl.value = targetEl.value.slice(0, -1);
+      } else if (k === "CLR") {
+        fInput.value = "";
+        aInput.value = "";
+        setActiveInput("formula");
+      } else {
+        const maxLen = activeInputTarget === "formula" ? 42 : 8;
+        if (targetEl.value.length < maxLen) {
+          targetEl.value += k;
+        }
+      }
+    }
+
+    // 智慧型全形/半形數學算式解析器（支援任意乘加交換律順序）
+    function evaluateMathFormula(rawStr) {
+      if (!rawStr) return { valid: false, hasOp: false, val: NaN };
+      let s = String(rawStr)
+        .replace(/\s+/g, "")
+        .replace(/[×✕✖xX＊*·]/g, "*")
+        .replace(/[÷／/]/g, "/")
+        .replace(/[＋+]/g, "+")
+        .replace(/[－–—-]/g, "-")
+        .replace(/[（\[｛{]/g, "(")
+        .replace(/[）\]｝}]/g, ")");
+
+      // 若學生在算式格最後多打了「=」或「=148」，只取等號左邊的算式
+      if (s.includes("=") || s.includes("＝")) {
+        s = s.split(/[=＝]/)[0];
+      }
+
+      const hasOp = /[+\-*/]/.test(s);
+      if (!/^[0-9+\-*/().]+$/.test(s)) {
+        return { valid: false, hasOp, val: NaN };
+      }
+      try {
+        const val = Function('"use strict"; return (' + s + ')')();
+        if (typeof val === "number" && isFinite(val)) {
+          return { valid: true, hasOp, val };
+        }
+      } catch (e) {}
+      return { valid: false, hasOp, val: NaN };
+    }
+
+    function showFormulaHint() {
+      playSound("click");
+      const q = QUESTIONS[currentQIndex];
+      const fb = document.getElementById("feedbackBox");
+      fb.className = "feedback-box feedback-err";
+      fb.innerHTML = `
+        <div>💡 <b>思考提示：</b>${q.hint}</div>
+        <div class="yellow-formula-card">📌 ${q.formulaCard}</div>
+      `;
+    }
+
+    function submitAnswer() {
+      const student = document.getElementById("studentSelect").value;
+      if (!student) {
+        alert("👆 請先在左上方下拉選單選擇你的「學生姓名」再開始作答！");
+        return;
+      }
+
+      const q = QUESTIONS[currentQIndex];
+      const rawFormula = document.getElementById("formulaInput").value.trim();
+      const rawAns = document.getElementById("answerInput").value.trim();
+
+      if (!rawFormula && !rawAns) {
+        alert("請先在「算式格」列寫算式，並在「答案格」輸入計算結果！");
+        return;
+      }
+      if (!rawFormula) {
+        alert("請在左邊「算式格」列寫你的計算算式（可使用下方鍵盤的 ×、+、(、) 符號）！");
+        setActiveInput("formula");
+        return;
+      }
+      if (!rawAns) {
+        alert("請在右邊「答案格」輸入最終計算出來的數字答案！");
+        setActiveInput("answer");
+        return;
+      }
+
+      const fCheck = evaluateMathFormula(rawFormula);
+      const userNum = parseFloat(rawAns.replace(/[^0-9.\-]/g, ""));
+      const isAnsCorrect = !isNaN(userNum) && Math.abs(userNum - q.answer) < 0.01;
+      const isFormulaCorrect = fCheck.valid && fCheck.hasOp && Math.abs(fCheck.val - q.answer) < 0.01;
+      const isAllCorrect = isAnsCorrect && isFormulaCorrect;
+
+      const fb = document.getElementById("feedbackBox");
+      const timeStr = new Date().toLocaleTimeString("zh-HK", { hour12: false });
+      const combinedRecordAnswer = `${rawFormula} = ${rawAns}`;
+
+      if (student !== "35 訪客") {
+        const rec = {
+          time: timeStr,
+          student: student,
+          type: `${q.type}(${activeActivity})`,
+          question: `Q${q.id}: ${q.prompt.slice(0, 18)}...`,
+          answer: combinedRecordAnswer,
+          result: isAllCorrect ? "正確" : "錯誤",
+          activity: activeActivity
+        };
+        localRecords.unshift(rec);
+        localStorage.setItem("cuboid_local_records", JSON.stringify(localRecords.slice(0, 500)));
+        sendToGoogleSheet(rec);
+      }
+
+      if (isAllCorrect) {
+        playSound("correct");
+        completedSet.add(q.id);
+        renderProgressDots();
+        const msg = PRAISE_OK[Math.floor(Math.random() * PRAISE_OK.length)];
+        fb.className = "feedback-box feedback-ok";
+        fb.innerHTML = `${msg}<br/><span style="font-size:14px;">你的列式：<b>${rawFormula} ＝ ${q.answer} (${q.unit})</b> 完全正確！請按「下一題」繼續！</span>`;
+        document.getElementById("formulaInput").disabled = true;
+        document.getElementById("answerInput").disabled = true;
+        document.getElementById("submitBtn").classList.add("hidden");
+        document.getElementById("nextBtn").classList.remove("hidden");
+      } else {
+        playSound("wrong");
+        const msg = PRAISE_ERR[Math.floor(Math.random() * PRAISE_ERR.length)];
+        let errDetail = "";
+        if (!fCheck.valid || !fCheck.hasOp) {
+          errDetail = `❌ 請檢查「算式格」（你輸入了 <b>${rawFormula}</b>），請確定括號成對且包含正確的運算符號（×、+）！`;
+        } else if (!isFormulaCorrect && isAnsCorrect) {
+          errDetail = `❌ 你的答案對了，但左邊「算式格」（<b>${rawFormula}</b> 算出來是 <b>${fCheck.val}</b>）與答案不符喔！`;
+        } else if (isFormulaCorrect && !isAnsCorrect) {
+          errDetail = `❌ 太可惜了！你的「算式」（<b>${rawFormula}</b>）完全正確，但右邊的「答案」（<b>${rawAns}</b>）計算錯誤，請再加乘一次！`;
+        } else {
+          errDetail = `❌ 算式或答案不正確（你輸入了 <b>${rawFormula} ＝ ${rawAns}</b>）。`;
+        }
+
+        // 嚴格遵守老師要求：算錯時絕不顯示數字算式，只提供面數文字提示與課本黃色公式卡
+        fb.className = "feedback-box feedback-err";
+        fb.innerHTML = `
+          <div>${errDetail}</div>
+          <div style="margin-top:4px;">${msg}</div>
+          <div style="margin-top:6px;">💡 <b>提示：</b>${q.hint}</div>
+          <div class="yellow-formula-card">📌 ${q.formulaCard}</div>
+        `;
+      }
+    }
+
+    function goNextQuestion() {
+      playSound("click");
+      if (currentQIndex < QUESTIONS.length - 1) {
+        currentQIndex++;
+        loadQuestion();
+      } else {
+        alert(`🎉 恭喜你完成了本回合全部題目！共答對 ${completedSet.size} / 20 題！`);
+      }
+    }
+
+    function switchTab(tab) {
+      playSound("click");
+      const p1 = document.getElementById("sectionPart1");
+      const p2 = document.getElementById("sectionPart2");
+      document.getElementById("tabBtn1").className = tab === "part1" ? "tab-btn active" : "tab-btn";
+      document.getElementById("tabBtn2").className = tab === "part2" ? "tab-btn active" : "tab-btn";
+
+      if (tab === "part1") {
+        p1.classList.remove("hidden");
+        p2.classList.add("hidden");
+        setTimeout(render3D, 30);
+      } else {
+        p1.classList.add("hidden");
+        p2.classList.remove("hidden");
+        loadQuestion();
+      }
+    }
+
+    function updateActivityBadgeUI() {
+      const badge = document.getElementById("currentActivityBadge");
+      if (badge) badge.textContent = "🎯 當前：" + activeActivity;
+      ["活動一", "活動二", "活動三"].forEach((act, idx) => {
+        const tag = document.getElementById("liveTag" + (idx + 1));
+        if (tag) {
+          if (act === activeActivity) tag.classList.remove("hidden");
+          else tag.classList.add("hidden");
+        }
+      });
+    }
+
+    function updateLockBtnUI() {
+      const btn = document.getElementById("toggleLockBtn");
+      const lockScreen = document.getElementById("closedLockScreen");
+      const tBadge = document.getElementById("teacherModeBadge");
+      if (tBadge) {
+        if (isTeacherUnlocked) tBadge.classList.remove("hidden");
+        else tBadge.classList.add("hidden");
+      }
+      if (!btn || !lockScreen) return;
+      if (classStatus === "closed" || classStatus === "close") {
+        btn.className = "btn btn-green";
+        btn.innerHTML = "🔓 開放課堂作答 (目前鎖定中)";
+        // 若此裝置已通過教師密碼驗證（教師講解機），關閉看板後依然可自由操作教學畫面，不會被鎖住！
+        if (!isTeacherUnlocked && !document.getElementById("dashboardModal").classList.contains("show")) {
+          lockScreen.classList.add("show");
+        } else {
+          lockScreen.classList.remove("show");
+        }
+      } else {
+        btn.className = "btn btn-red";
+        btn.innerHTML = "🔒 一鍵鎖定課堂";
+        lockScreen.classList.remove("show");
+      }
+    }
+
+    async function checkBackendStatus(manual = false) {
+      if (!gasUrl) return;
+      try {
+        const res = await fetch(gasUrl + "?action=status&t=" + Date.now());
+        const data = await res.json();
+        classStatus = String(data.status || "open").trim().toLowerCase();
+        if (data.activeActivity && data.activeActivity !== activeActivity) {
+          activeActivity = String(data.activeActivity).trim();
+          localStorage.setItem("cuboid_active_activity", activeActivity);
+          completedSet.clear();
+          renderProgressDots();
+        }
+        updateActivityBadgeUI();
+        updateLockBtnUI();
+        if (manual) {
+          alert(classStatus === "closed" ? "🔒 目前課堂仍處於「鎖定」狀態。" : `✅ 目前課堂為開放狀態（${activeActivity}）！`);
+        }
+      } catch (e) {
+        if (manual) alert("⚠️ 無法連線至 Google Sheet，請確認網路狀態。");
+      }
+    }
+
+    async function toggleClassLock() {
+      playSound("click");
+      const targetStatus = (classStatus === "closed" || classStatus === "close") ? "open" : "closed";
+      const confirmMsg = targetStatus === "closed"
+        ? "確定要「🔒 鎖定課堂」嗎？\n鎖定後全班 iPad 將立即顯示「本節課已完結」，防止其他班級學生亂按改寫數據！"
+        : "確定要「🔓 重新開放課堂作答」嗎？";
+      if (!confirm(confirmMsg)) return;
+
+      classStatus = targetStatus;
+      updateLockBtnUI();
+
+      if (gasUrl) {
+        try {
+          await fetch(gasUrl, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: "setStatus", status: targetStatus })
+          });
+          alert(targetStatus === "closed" ? "🔒 已成功鎖定全班 iPad 作答權限！" : "🔓 已重新開放全班作答！");
+        } catch (e) {
+          alert("⚠️ 網路連線異常，請確認是否已更新 Google Apps Script 部署版本。");
+        }
+      }
+    }
+
+    async function sendToGoogleSheet(rec) {
+      if (!gasUrl || rec.student === "35 訪客") return;
+      try {
+        const res = await fetch(gasUrl, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
+            action: "submit",
+            time: rec.time,
+            student: rec.student,
+            type: rec.type,
+            question: rec.question,
+            answer: rec.answer,
+            result: rec.result,
+            activity: rec.activity
+          })
+        });
+        const data = await res.json();
+        classStatus = String(data.status || "open").trim().toLowerCase();
+        updateLockBtnUI();
+      } catch (e) {}
+    }
+
+    let currentPwdBuffer = "";
+    let boardClockTimer = null;
+
+    function updateBoardClock() {
+      const now = new Date();
+      const days = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+      const dateStr = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日  ${days[now.getDay()]}`;
+      const timeStr = now.toLocaleTimeString("zh-HK", { hour12: false });
+      const dEl = document.getElementById("boardDateStr");
+      const tEl = document.getElementById("boardClockStr");
+      if (dEl) dEl.textContent = dateStr;
+      if (tEl) tEl.textContent = timeStr;
+    }
+
+    function renderPwdSlots() {
+      const slots = document.querySelectorAll("#pwdSlots .pwd-slot");
+      slots.forEach((slot, i) => {
+        if (i < currentPwdBuffer.length) {
+          slot.textContent = "*";
+          slot.classList.add("filled");
+        } else {
+          slot.textContent = "";
+          slot.classList.remove("filled");
+        }
+      });
+    }
+
+    function pressPwdKey(k) {
+      document.getElementById("pwdErrorMsg").classList.add("hidden");
+      if (k === "CLR") {
+        currentPwdBuffer = "";
+      } else if (k === "BS") {
+        currentPwdBuffer = currentPwdBuffer.slice(0, -1);
+      } else if (currentPwdBuffer.length < 6) {
+        currentPwdBuffer += k;
+      }
+      renderPwdSlots();
+
+      if (currentPwdBuffer.length === 6) {
+        verifyTeacherPassword();
+      }
+    }
+
+    function openPasswordModal() {
+      playSound("click");
+      currentPwdBuffer = "";
+      renderPwdSlots();
+      document.getElementById("pwdErrorMsg").classList.add("hidden");
+      document.getElementById("passwordModal").classList.add("show");
+    }
+
+    function closePasswordModal() {
+      currentPwdBuffer = "";
+      renderPwdSlots();
+      document.getElementById("passwordModal").classList.remove("show");
+    }
+
+    function verifyTeacherPassword() {
+      if (currentPwdBuffer === "400351") {
+        playSound("correct");
+        isTeacherUnlocked = true;
+        sessionStorage.setItem("cuboid_teacher_unlocked", "true");
+        closePasswordModal();
+        document.getElementById("closedLockScreen").classList.remove("show");
+        document.getElementById("dashboardModal").classList.add("show");
+        viewingActivity = activeActivity;
+        updateBoardClock();
+        if (boardClockTimer) clearInterval(boardClockTimer);
+        boardClockTimer = setInterval(updateBoardClock, 1000);
+        renderDashboard(localRecords);
+        syncCloudRecords();
+      } else {
+        playSound("wrong");
+        currentPwdBuffer = "";
+        renderPwdSlots();
+        document.getElementById("pwdErrorMsg").classList.remove("hidden");
+      }
+    }
+
+    function closeDashboardModal() {
+      document.getElementById("dashboardModal").classList.remove("show");
+      if (boardClockTimer) clearInterval(boardClockTimer);
+      updateLockBtnUI();
+    }
+
+    async function switchBoardActivity(actName) {
+      playSound("click");
+      viewingActivity = actName;
+      activeActivity = actName;
+      localStorage.setItem("cuboid_active_activity", activeActivity);
+      focusStudentName = null;
+      updateActivityBadgeUI();
+      renderDashboard(localRecords);
+
+      if (gasUrl) {
+        try {
+          await fetch(gasUrl, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: "setActivity", activity: actName })
+          });
+        } catch (e) {}
+      }
+    }
+
+    function selectFocusStudent(stuName) {
+      playSound("click");
+      focusStudentName = stuName;
+      renderDashboard(localRecords);
+    }
+
+    function toggleRawTable() {
+      playSound("click");
+      document.getElementById("rawTableWrap").classList.toggle("hidden");
+    }
+
+    async function syncCloudRecords() {
+      if (!gasUrl) return;
+      try {
+        const res = await fetch(gasUrl + "?action=getData&t=" + Date.now());
+        const data = await res.json();
+        if (data.status) {
+          classStatus = String(data.status).trim().toLowerCase();
+          updateLockBtnUI();
+        }
+        if (data.activeActivity) {
+          activeActivity = String(data.activeActivity).trim();
+          updateActivityBadgeUI();
+        }
+        if (Array.isArray(data.rows)) {
+          localRecords = data.rows.reverse();
+          localStorage.setItem("cuboid_local_records", JSON.stringify(localRecords));
+          renderDashboard(localRecords);
+        }
+      } catch (e) {}
+    }
+
+    function getRecordActivity(r) {
+      if (r.activity && ["活動一", "活動二", "活動三"].includes(r.activity)) {
+        return r.activity;
+      }
+      if (r.type && r.type.includes("活動二")) return "活動二";
+      if (r.type && r.type.includes("活動三")) return "活動三";
+      return "活動一";
+    }
+
+    function parseQuestionId(qStr, idxFallback) {
+      const m = String(qStr || "").match(/Q(\d+)/i);
+      return m ? parseInt(m[1], 10) : ("attempt_" + idxFallback);
+    }
+
+    function renderDashboard(records) {
+      const actMap = { "活動一": 1, "活動二": 2, "活動三": 3 };
+      const actNum = actMap[viewingActivity] || 1;
+      document.getElementById("leftPillTag").textContent = `第 ${actNum} 科 / 共 3 科（${viewingActivity}）`;
+      ["活動一", "活動二", "活動三"].forEach((act, idx) => {
+        const btn = document.getElementById("actTab" + (idx + 1));
+        if (btn) btn.className = act === viewingActivity ? "cute-act-btn active" : "cute-act-btn";
+      });
+
+      const actRecords = records.filter(r =>
+        r.student && r.student !== "35 訪客" && getRecordActivity(r) === viewingActivity
+      );
+
+      const roster34 = STUDENTS.slice(0, 34);
+      const stuStats = new Map();
+      roster34.forEach(s => {
+        stuStats.set(s, {
+          name: s,
+          attempts: 0,
+          correctSet: new Set(),
+          lastCorrectTime: ""
+        });
+      });
+
+      const chronological = [...actRecords].reverse();
+      chronological.forEach((r, idx) => {
+        if (!stuStats.has(r.student)) return;
+        const st = stuStats.get(r.student);
+        st.attempts++;
+        if (r.result === "正確") {
+          const qKey = parseQuestionId(r.question, idx);
+          if (!st.correctSet.has(qKey) && st.correctSet.size < 20) {
+            st.correctSet.add(qKey);
+            st.lastCorrectTime = r.time || "";
+          }
+        }
+      });
+
+      let presentCount = 0;
+      let totalUniqueSolved = 0;
+      stuStats.forEach(st => {
+        if (st.attempts > 0) presentCount++;
+        totalUniqueSolved += st.correctSet.size;
+      });
+      const absentCount = 34 - presentCount;
+      document.getElementById("attPresentNum").textContent = presentCount;
+      document.getElementById("attAbsentNum").textContent = absentCount;
+
+      let displaySolved = 0;
+      let displayPct = 0;
+      if (focusStudentName && stuStats.has(focusStudentName)) {
+        const st = stuStats.get(focusStudentName);
+        displaySolved = st.correctSet.size;
+        displayPct = Math.round((displaySolved / 20) * 100);
+        document.getElementById("focusStudentText").textContent = `${focusStudentName} (${displaySolved}/20)`;
+      } else {
+        const avgSolved = presentCount > 0 ? (totalUniqueSolved / presentCount) : 0;
+        displaySolved = Math.round(avgSolved * 10) / 10;
+        displayPct = Math.round((avgSolved / 20) * 100);
+        document.getElementById("focusStudentText").textContent = `全班平均答對題數 (${displaySolved}/20)`;
+      }
+      const clampedPct = Math.max(0, Math.min(100, displayPct));
+      document.getElementById("chickBarFill").style.width = clampedPct + "%";
+      document.getElementById("chickRunner").style.left = Math.max(4, Math.min(92, clampedPct)) + "%";
+      document.getElementById("chickPctText").textContent = clampedPct + "%";
+
+      const listEl = document.getElementById("stuProgressList");
+      listEl.innerHTML = roster34.map(name => {
+        const st = stuStats.get(name);
+        const solved = st.correctSet.size;
+        const pct = Math.round((solved / 20) * 100);
+        const barColor = pct === 100 ? "#eab308" : pct >= 80 ? "#10b981" : pct >= 40 ? "#38bdf8" : "#f59e0b";
+        const crown = pct === 100 ? "👑 " : "";
+        const isSel = focusStudentName === name ? "selected" : "";
+        return `
+          <div class="stu-prog-item ${isSel}" onclick="selectFocusStudent('${name}')">
+            <div style="display:flex; justify-content:space-between; font-size:14px; font-weight:900;">
+              <span>${crown}${name}</span>
+              <span style="color:${ solved > 0 ? '#0f172a' : '#94a3b8' };">(${solved}/20)</span>
+            </div>
+            <div class="stu-mini-bar">
+              <div class="stu-mini-fill" style="width:${pct}%; background:${barColor};"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      const ranked = Array.from(stuStats.values())
+        .filter(st => st.correctSet.size > 0)
+        .sort((a, b) => {
+          if (b.correctSet.size !== a.correctSet.size) {
+            return b.correctSet.size - a.correctSet.size;
+          }
+          return String(a.lastCorrectTime).localeCompare(String(b.lastCorrectTime));
+        })
+        .slice(0, 10);
+
+      const speedEl = document.getElementById("speedKingList");
+      if (ranked.length === 0) {
+        speedEl.innerHTML = `<div style="text-align:center; color:#9d174d; padding:32px 0; font-weight:800;">目前「${viewingActivity}」尚無學生完成作答</div>`;
+      } else {
+        const medals = ["🥇", "🥈", "🥉"];
+        speedEl.innerHTML = ranked.map((st, i) => {
+          const badge = i < 3 ? medals[i] : `<span style="display:inline-block; width:20px; text-align:center;">${i + 1}.</span>`;
+          return `
+            <div class="speed-row">
+              <span>${badge} ${st.name}</span>
+              <span style="color:#be123c;">${st.correctSet.size}/20 題 <small style="color:#64748b;">(${st.lastCorrectTime || "完成"})</small></span>
+            </div>
+          `;
+        }).join("");
+      }
+
+      const tbody = document.getElementById("recordsTableBody");
+      if (actRecords.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:12px; color:#94a3b8;">本活動回合尚無作答紀錄</td></tr>`;
+      } else {
+        tbody.innerHTML = actRecords.slice(0, 50).map(r => `
+          <tr style="border-bottom:1px solid #f1f5f9;">
+            <td style="padding:6px;">${r.time || ""}</td>
+            <td style="padding:6px;">${getRecordActivity(r)}</td>
+            <td style="padding:6px; font-weight:800;">${r.student}</td>
+            <td style="padding:6px;">${r.question}</td>
+            <td style="padding:6px; font-weight:800;">${r.answer}</td>
+            <td style="padding:6px; font-weight:800; color:${r.result === "正確" ? "#059669" : "#dc2626"};">${r.result}</td>
+          </tr>
+        `).join("");
+      }
+    }
+
+    async function clearAllRecords() {
+      if (!confirm("確定要清空試算表內第 2 列以後的所有作答紀錄，重置全班數據嗎？")) return;
+      localRecords = [];
+      localStorage.removeItem("cuboid_local_records");
+      renderDashboard([]);
+      if (gasUrl) {
+        try {
+          await fetch(gasUrl, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: "clear" })
+          });
+          alert("✅ 已成功清空雲端試算表與本機的所有作答紀錄！");
+        } catch (e) {
+          alert("⚠️ 本機紀錄已清空，但雲端清空失敗。");
+        }
+      }
+    }
+
+    function openSettingsModal() {
+      playSound("click");
+      document.getElementById("gasUrlInput").value = gasUrl;
+      document.getElementById("settingsModal").classList.add("show");
+    }
+    function closeSettingsModal() {
+      document.getElementById("settingsModal").classList.remove("show");
+    }
+    function saveGasUrl() {
+      gasUrl = document.getElementById("gasUrlInput").value.trim();
+      localStorage.setItem("cuboid_gas_url", gasUrl);
+      closeSettingsModal();
+      checkBackendStatus(true);
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      // 學生名單已直接內建於 HTML <select> 中
+
+      document.getElementById("formulaInput").addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === "=") {
+          e.preventDefault();
+          setActiveInput("answer");
+          document.getElementById("answerInput").focus();
+        }
+      });
+
+      document.getElementById("answerInput").addEventListener("keydown", e => {
+        if (e.key === "Enter") {
+          if (!document.getElementById("submitBtn").classList.contains("hidden")) {
+            submitAnswer();
+          } else {
+            goNextQuestion();
+          }
+        }
+      });
+
+      window.addEventListener("keydown", e => {
+        const modal = document.getElementById("passwordModal");
+        if (!modal.classList.contains("show")) return;
+        if (e.key >= "0" && e.key <= "9") {
+          e.preventDefault();
+          pressPwdKey(e.key);
+        } else if (e.key === "Backspace") {
+          e.preventDefault();
+          pressPwdKey("BS");
+        } else if (e.key === "Enter") {
+          e.preventDefault();
+          verifyTeacherPassword();
+        } else if (e.key === "Escape") {
+          closePasswordModal();
+        }
+      });
+
+      initCanvasTouch();
+      updateDimensions();
+      loadQuestion();
+      updateActivityBadgeUI();
+      checkBackendStatus(false);
+
+      setInterval(() => {
+        checkBackendStatus(false);
+      }, 8000);
+    });
+  </script>
+</body>
+</html>
